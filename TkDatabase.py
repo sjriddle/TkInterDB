@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 import sqlite3
 
-
 class StudentDB:
     # Will hold database connection
     db_conn = 0
@@ -12,7 +11,6 @@ class StudentDB:
     curr_student = 0
 
     def setup_db(self):
-
         # Open or create database
         self.db_conn = sqlite3.connect('student.db')
 
@@ -30,7 +28,6 @@ class StudentDB:
             print("ERROR : Table not created")
 
     def stud_submit(self):
-
         # Insert students in the db
         self.db_conn.execute("INSERT INTO Students (FName, LName) " +
                              "VALUES ('" +
@@ -45,7 +42,6 @@ class StudentDB:
         self.update_listbox()
 
     def update_listbox(self):
-
         # Delete items in the list box
         self.list_box.delete(0, END)
 
@@ -72,7 +68,6 @@ class StudentDB:
 
     # Load listbox selected student into entries
     def load_student(self, event=None):
-
         # Get index selected which is the student id
         lb_widget = event.widget
         index = str(lb_widget.curselection()[0] + 1)
@@ -102,7 +97,6 @@ class StudentDB:
 
     # Update student info
     def update_student(self, event=None):
-
         # Update student records with change made in entry
         try:
             self.db_conn.execute("UPDATE Students SET FName='" +
@@ -125,7 +119,6 @@ class StudentDB:
         self.update_listbox()
 
     def __init__(self, root):
-
         root.title("Student Database")
         root.geometry("270x340")
 
@@ -179,7 +172,6 @@ class StudentDB:
 
         # Update list box with student list
         self.update_listbox()
-
 
 # Get the root window object
 root = Tk()
