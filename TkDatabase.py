@@ -62,7 +62,6 @@ class StudentDB:
 
         except sqlite3.OperationalError:
             print("The Table Doesn't Exist")
-
         except:
             print("1: Couldn't Retrieve Data From Database")
 
@@ -91,7 +90,6 @@ class StudentDB:
 
         except sqlite3.OperationalError:
             print("The Table Doesn't Exist")
-
         except:
             print("2 : Couldn't Retrieve Data From Database")
 
@@ -158,26 +156,13 @@ class StudentDB:
         # ----- 4th Row -----
 
         scrollbar = Scrollbar(root)
-
         self.list_box = Listbox(root)
-
         self.list_box.bind('<<ListboxSelect>>', self.load_student)
-
         self.list_box.insert(1, "Students Here")
-
         self.list_box.grid(row=3, column=0, columnspan=4, padx=10, pady=10, sticky=W + E)
-
-        # Call for database to be created
         self.setup_db()
-
-        # Update list box with student list
         self.update_listbox()
 
-# Get the root window object
 root = Tk()
-
-# Create the calculator
 studDB = StudentDB(root)
-
-# Run the app until exited
 root.mainloop()
