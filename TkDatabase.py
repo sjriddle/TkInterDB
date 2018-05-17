@@ -3,11 +3,9 @@ from tkinter import ttk
 import sqlite3
 
 class StudentDB:
-    # Will hold database connection
+    # Will hold database connection, create cursor, and store current student value
     db_conn = 0
-    # A cursor is used to traverse the records of a result
     theCursor = 0
-    # Will store the current student selected
     curr_student = 0
 
     def setup_db(self):
