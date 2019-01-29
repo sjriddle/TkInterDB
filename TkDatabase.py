@@ -86,15 +86,12 @@ class StudentDB:
                                  self.curr_student)
 
             self.db_conn.commit()
-
         except sqlite3.OperationalError:
             print("Database couldn't be Updated")
 
-        # Clear the entry boxes
+        # Clear the entry boxes. Update list box with student list.
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
-
-        # Update list box with student list
         self.update_listbox()
 
     def __init__(self, root):
@@ -107,8 +104,7 @@ class StudentDB:
 
         # Will hold the changing value stored first name
         self.fn_entry_value = StringVar(root, value="")
-        self.fn_entry = ttk.Entry(root,
-                                  textvariable=self.fn_entry_value)
+        self.fn_entry = ttk.Entry(root, textvariable=self.fn_entry_value)
         self.fn_entry.grid(row=0, column=1, padx=10, pady=10, sticky=W)
 
         # ----- 2nd Row -----
@@ -117,25 +113,16 @@ class StudentDB:
 
         # Will hold the changing value stored last name
         self.ln_entry_value = StringVar(root, value="")
-        self.ln_entry = ttk.Entry(root,
-                                  textvariable=self.ln_entry_value)
+        self.ln_entry = ttk.Entry(root, textvariable=self.ln_entry_value)
         self.ln_entry.grid(row=1, column=1, padx=10, pady=10, sticky=W)
 
         # ----- 3rd Row -----
-        self.submit_button = ttk.Button(root,
-                                        text="Submit",
-                                        command=lambda: self.stud_submit())
-        self.submit_button.grid(row=2, column=0,
-                                padx=10, pady=10, sticky=W)
-
-        self.update_button = ttk.Button(root,
-                                        text="Update",
-                                        command=lambda: self.update_student())
-        self.update_button.grid(row=2, column=1,
-                                padx=10, pady=10)
+        self.submit_button = ttk.Button(root, text="Submit", command=lambda: self.stud_submit())
+        self.submit_button.grid(row=2, column=0, padx=10, pady=10, sticky=W)
+        self.update_button = ttk.Button(root, text="Update", command=lambda: self.update_student())
+        self.update_button.grid(row=2, column=1, padx=10, pady=10)
 
         # ----- 4th Row -----
-
         scrollbar = Scrollbar(root)
         self.list_box = Listbox(root)
         self.list_box.bind('<<ListboxSelect>>', self.load_student)
