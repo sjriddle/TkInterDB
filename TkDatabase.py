@@ -9,19 +9,15 @@ class StudentDB:
     curr_student = 0
 
     def setup_db(self):
-        # Open or create database
+        # Open or create database, the cursor traverses the records
         self.db_conn = sqlite3.connect('student.db')
-
-        # The cursor traverses the records
         self.theCursor = self.db_conn.cursor()
 
         # Create the table if it doesn't exist
         try:
             self.db_conn.execute(
                 "CREATE TABLE if not exists Students(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FName TEXT NOT NULL, LName TEXT NOT NULL);")
-
             self.db_conn.commit()
-
         except sqlite3.OperationalError:
             print("ERROR : Table not created")
 
@@ -31,12 +27,9 @@ class StudentDB:
                              "VALUES ('" +
                              self.fn_entry_value.get() + "', '" +
                              self.ln_entry_value.get() + "')")
-
-        # Clear the entry boxes
+        # Clear the entry boxes. Update list box with student list
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
-
-        # Update list box with student list
         self.update_listbox()
 
     def update_listbox(self):
@@ -46,8 +39,6 @@ class StudentDB:
         # Get students from the db
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students")
-
-            # You receive a list of lists that hold the result
             for row in result:
                 stud_id = row[0]
                 stud_fname = row[1]
@@ -57,26 +48,20 @@ class StudentDB:
                 self.list_box.insert(stud_id,
                                      stud_fname + " " +
                                      stud_lname)
-
         except sqlite3.OperationalError:
             print("The Table Doesn't Exist")
         except:
             print("1: Couldn't Retrieve Data From Database")
 
-    # Load listbox selected student into entries
     def load_student(self, event=None):
-        # Get index selected which is the student id
+        # Get index selected which is the student id. Store the current student index
         lb_widget = event.widget
         index = str(lb_widget.curselection()[0] + 1)
-
-        # Store the current student index
         self.curr_student = index
 
         # Retrieve student list from the db
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students WHERE ID=" + index)
-
-            # You receive a list of lists that hold the result
             for row in result:
                 stud_id = row[0]
                 stud_fname = row[1]
@@ -85,13 +70,11 @@ class StudentDB:
                 # Set values in the entries
                 self.fn_entry_value.set(stud_fname)
                 self.ln_entry_value.set(stud_lname)
-
         except sqlite3.OperationalError:
             print("The Table Doesn't Exist")
         except:
             print("2 : Couldn't Retrieve Data From Database")
 
-    # Update student info
     def update_student(self, event=None):
         # Update student records with change made in entry
         try:
