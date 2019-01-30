@@ -3,17 +3,14 @@ from tkinter import ttk
 import sqlite3
 
 class StudentDB:
-    # Will hold database connection, create cursor, and store current student value
     db_conn = 0
     theCursor = 0
     curr_student = 0
 
     def setup_db(self):
-        # Open or create database, the cursor traverses the records
         self.db_conn = sqlite3.connect('student.db')
         self.theCursor = self.db_conn.cursor()
 
-        # Create the table if it doesn't exist
         try:
             self.db_conn.execute(
                 "CREATE TABLE if not exists Students(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FName TEXT NOT NULL, LName TEXT NOT NULL);")
@@ -22,21 +19,17 @@ class StudentDB:
             print("ERROR : Table not created")
 
     def stud_submit(self):
-        # Insert students in the db
         self.db_conn.execute("INSERT INTO Students (FName, LName) " +
                              "VALUES ('" +
                              self.fn_entry_value.get() + "', '" +
                              self.ln_entry_value.get() + "')")
-        # Clear the entry boxes. Update list box with student list
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
         self.update_listbox()
 
     def update_listbox(self):
-        # Delete items in the list box
         self.list_box.delete(0, END)
 
-        # Get students from the db
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students")
             for row in result:
@@ -44,7 +37,6 @@ class StudentDB:
                 stud_fname = row[1]
                 stud_lname = row[2]
 
-                # Put the student in the list box
                 self.list_box.insert(stud_id,
                                      stud_fname + " " +
                                      stud_lname)
@@ -54,20 +46,16 @@ class StudentDB:
             print("1: Couldn't Retrieve Data From Database")
 
     def load_student(self, event=None):
-        # Get index selected which is the student id. Store the current student index
         lb_widget = event.widget
         index = str(lb_widget.curselection()[0] + 1)
         self.curr_student = index
 
-        # Retrieve student list from the db
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students WHERE ID=" + index)
             for row in result:
                 stud_id = row[0]
                 stud_fname = row[1]
                 stud_lname = row[2]
-
-                # Set values in the entries
                 self.fn_entry_value.set(stud_fname)
                 self.ln_entry_value.set(stud_lname)
         except sqlite3.OperationalError:
@@ -76,7 +64,6 @@ class StudentDB:
             print("2 : Couldn't Retrieve Data From Database")
 
     def update_student(self, event=None):
-        # Update student records with change made in entry
         try:
             self.db_conn.execute("UPDATE Students SET FName='" +
                                  self.fn_entry_value.get() +
@@ -89,7 +76,6 @@ class StudentDB:
         except sqlite3.OperationalError:
             print("Database couldn't be Updated")
 
-        # Clear the entry boxes. Update list box with student list.
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
         self.update_listbox()
