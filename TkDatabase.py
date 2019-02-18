@@ -10,13 +10,13 @@ class StudentDB:
     def setup_db(self):
         self.db_conn = sqlite3.connect('student.db')
         self.theCursor = self.db_conn.cursor()
-
         try:
             self.db_conn.execute(
                 "CREATE TABLE if not exists Students(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FName TEXT NOT NULL, LName TEXT NOT NULL);")
             self.db_conn.commit()
         except sqlite3.OperationalError:
             print("ERROR : Table not created")
+
 
     def stud_submit(self):
         self.db_conn.execute("INSERT INTO Students (FName, LName) " +
@@ -26,6 +26,7 @@ class StudentDB:
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
         self.update_listbox()
+
 
     def update_listbox(self):
         self.list_box.delete(0, END)
@@ -45,11 +46,11 @@ class StudentDB:
         except:
             print("1: Couldn't Retrieve Data From Database")
 
+
     def load_student(self, event=None):
         lb_widget = event.widget
         index = str(lb_widget.curselection()[0] + 1)
         self.curr_student = index
-
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students WHERE ID=" + index)
             for row in result:
@@ -63,6 +64,7 @@ class StudentDB:
         except:
             print("2 : Couldn't Retrieve Data From Database")
 
+
     def update_student(self, event=None):
         try:
             self.db_conn.execute("UPDATE Students SET FName='" +
@@ -71,14 +73,13 @@ class StudentDB:
                                  self.ln_entry_value.get() +
                                  "' WHERE ID=" +
                                  self.curr_student)
-
             self.db_conn.commit()
         except sqlite3.OperationalError:
             print("Database couldn't be Updated")
-
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
         self.update_listbox()
+
 
     def __init__(self, root):
         root.title("Student Database")
@@ -87,8 +88,6 @@ class StudentDB:
         # ----- 1st Row -----
         fn_label = Label(root, text="First Name")
         fn_label.grid(row=0, column=0, padx=10, pady=10, sticky=W)
-
-        # Will hold the changing value stored first name
         self.fn_entry_value = StringVar(root, value="")
         self.fn_entry = ttk.Entry(root, textvariable=self.fn_entry_value)
         self.fn_entry.grid(row=0, column=1, padx=10, pady=10, sticky=W)
@@ -96,8 +95,6 @@ class StudentDB:
         # ----- 2nd Row -----
         ln_label = Label(root, text="Last Name")
         ln_label.grid(row=1, column=0, padx=10, pady=10, sticky=W)
-
-        # Will hold the changing value stored last name
         self.ln_entry_value = StringVar(root, value="")
         self.ln_entry = ttk.Entry(root, textvariable=self.ln_entry_value)
         self.ln_entry.grid(row=1, column=1, padx=10, pady=10, sticky=W)
