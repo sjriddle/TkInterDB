@@ -30,17 +30,13 @@ class StudentDB:
 
     def update_listbox(self):
         self.list_box.delete(0, END)
-
         try:
             result = self.theCursor.execute("SELECT ID, FName, LName FROM Students")
             for row in result:
                 stud_id = row[0]
                 stud_fname = row[1]
                 stud_lname = row[2]
-
-                self.list_box.insert(stud_id,
-                                     stud_fname + " " +
-                                     stud_lname)
+                self.list_box.insert(stud_id, stud_fname + " " + stud_lname)
         except sqlite3.OperationalError:
             print("The Table Doesn't Exist")
         except:
