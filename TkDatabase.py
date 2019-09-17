@@ -43,7 +43,7 @@ class StudentDB:
             print("1: Couldn't Retrieve Data From Database")
 
 
-    def load_student(self, event=None):
+    def load_student(self,event=None):
         lb_widget = event.widget
         index = str(lb_widget.curselection()[0] + 1)
         self.curr_student = index
@@ -61,7 +61,7 @@ class StudentDB:
             print("2 : Couldn't Retrieve Data From Database")
 
 
-    def update_student(self, event=None):
+    def update_student(self,event=None):
         try:
             self.db_conn.execute("UPDATE Students SET FName='" +
                                  self.fn_entry_value.get() +
@@ -72,6 +72,7 @@ class StudentDB:
             self.db_conn.commit()
         except sqlite3.OperationalError:
             print("Database couldn't be Updated")
+            
         self.fn_entry.delete(0, "end")
         self.ln_entry.delete(0, "end")
         self.update_listbox()
