@@ -1,2 +1,0 @@
-# TkInterDB
-Python TkInter Database
